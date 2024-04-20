@@ -71,7 +71,11 @@ get_include_paths
 
 unset LD_RUN_PATH
 
-./autogen.sh
+./autogen.sh --prefix=/uny/pkg/"$pkgname"/"$pkgver" \
+    --sysconfdir=/etc \
+    --disable-static \
+    --with-history \
+    --docdir=/uny/pkg/"$pkgname"/"$pkgver"/share/doc/libxml2
 
 ./configure --prefix=/uny/pkg/"$pkgname"/"$pkgver" \
     --sysconfdir=/etc \
