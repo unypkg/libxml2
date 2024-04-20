@@ -1,0 +1,98 @@
+#!/usr/bin/env bash
+# shellcheck disable=SC2034,SC1091,SC2154
+
+set -vx
+
+######################################################################################################################
+### Setup Build System and GitHub
+
+#apt install -y
+
+wget -qO- uny.nu/pkg | bash -s buildsys
+mkdir /uny/tmp
+
+### Installing build dependencies
+#unyp install
+
+### Getting Variables from files
+UNY_AUTO_PAT="$(cat UNY_AUTO_PAT)"
+export UNY_AUTO_PAT
+GH_TOKEN="$(cat GH_TOKEN)"
+export GH_TOKEN
+
+source /uny/uny/build/github_conf
+source /uny/uny/build/download_functions
+source /uny/git/unypkg/fn
+
+######################################################################################################################
+### Timestamp & Download
+
+uny_build_date_seconds_now="$(date +%s)"
+uny_build_date_now="$(date -d @"$uny_build_date_seconds_now" +"%Y-%m-%dT%H.%M.%SZ")"
+
+mkdir -pv /uny/sources
+cd /uny/sources || exit
+
+pkgname="libxml2"
+pkggit="https://github.com/GNOME/libxml2.git refs/tags/v*"
+gitdepth="--depth=1"
+
+### Get version info from git remote
+# shellcheck disable=SC2086
+latest_head="$(git ls-remote --refs --tags --sort="v:refname" $pkggit | grep -E "v[0-9.]*$" | tail --lines=1)"
+latest_ver="$(echo "$latest_head" | grep -o "v[0-9.].*" | sed "s|v||")"
+latest_commit_id="$(echo "$latest_head" | cut --fields=1)"
+
+version_details
+
+# Release package no matter what:
+echo "newer" >release-"$pkgname"
+
+git_clone_source_repo
+version_details
+archiving_source
+
+######################################################################################################################
+### Build
+
+# unyc - run commands in uny's chroot environment
+# shellcheck disable=SC2154
+unyc <<"UNYEOF"
+set -vx
+source /uny/build/functions
+pkgname="libxml2"
+
+version_verbose_log_clean_unpack_cd
+get_env_var_values
+get_include_paths
+
+####################################################
+### Start of individual build script
+
+unset LD_RUN_PATH
+
+./autogen.sh
+
+./configure --prefix=/uny/pkg/"$pkgname"/"$pkgver" \
+    --sysconfdir=/etc \
+    --disable-static \
+    --with-history \
+    --docdir=/uny/pkg/"$pkgname"/"$pkgver"/share/doc/libxml2
+
+make -j"$(nproc)"
+make -j"$(nproc)" install
+
+rm -vf /uny/pkg/"$pkgname"/"$pkgver"/lib/libxml2.la
+
+####################################################
+### End of individual build script
+
+add_to_paths_files
+dependencies_file_and_unset_vars
+cleanup_verbose_off_timing_end
+UNYEOF
+
+######################################################################################################################
+### Packaging
+
+package_unypkg
