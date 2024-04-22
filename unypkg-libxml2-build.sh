@@ -69,6 +69,10 @@ get_include_paths
 ####################################################
 ### Start of individual build script
 
+# Link libtool m4 files
+automake_aclocal_dir=(/uny/pkg/automake/*/share/aclocal/)
+echo "/uny/pkg/*/*/share/aclocal" >"${automake_aclocal_dir[0]}"dirlist
+
 unset LD_RUN_PATH
 
 ./autogen.sh --prefix=/uny/pkg/"$pkgname"/"$pkgver" \
