@@ -12,7 +12,7 @@ wget -qO- uny.nu/pkg | bash -s buildsys
 mkdir /uny/tmp
 
 ### Installing build dependencies
-#unyp install
+unyp install python
 
 ### Getting Variables from files
 UNY_AUTO_PAT="$(cat UNY_AUTO_PAT)"
@@ -81,11 +81,11 @@ unset LD_RUN_PATH
     --with-history \
     --docdir=/uny/pkg/"$pkgname"/"$pkgver"/share/doc/libxml2
 
-./configure --prefix=/uny/pkg/"$pkgname"/"$pkgver" \
-    --sysconfdir=/etc \
-    --disable-static \
-    --with-history \
-    --docdir=/uny/pkg/"$pkgname"/"$pkgver"/share/doc/libxml2
+#./configure --prefix=/uny/pkg/"$pkgname"/"$pkgver" \
+#    --sysconfdir=/etc \
+#    --disable-static \
+#    --with-history \
+#    --docdir=/uny/pkg/"$pkgname"/"$pkgver"/share/doc/libxml2
 
 make -j"$(nproc)"
 make -j"$(nproc)" install
