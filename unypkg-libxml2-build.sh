@@ -9,7 +9,6 @@ set -vx
 #apt install -y
 
 wget -qO- uny.nu/pkg | bash -s buildsys
-mkdir /uny/tmp
 
 ### Installing build dependencies
 unyp install python
@@ -20,15 +19,13 @@ export UNY_AUTO_PAT
 GH_TOKEN="$(cat GH_TOKEN)"
 export GH_TOKEN
 
-source /uny/uny/build/github_conf
-source /uny/uny/build/download_functions
 source /uny/git/unypkg/fn
+uny_auto_github_conf
 
 ######################################################################################################################
 ### Timestamp & Download
 
-uny_build_date_seconds_now="$(date +%s)"
-uny_build_date_now="$(date -d @"$uny_build_date_seconds_now" +"%Y-%m-%dT%H.%M.%SZ")"
+uny_build_date
 
 mkdir -pv /uny/sources
 cd /uny/sources || exit
@@ -80,12 +77,6 @@ unset LD_RUN_PATH
     --disable-static \
     --with-history \
     --docdir=/uny/pkg/"$pkgname"/"$pkgver"/share/doc/libxml2
-
-#./configure --prefix=/uny/pkg/"$pkgname"/"$pkgver" \
-#    --sysconfdir=/etc \
-#    --disable-static \
-#    --with-history \
-#    --docdir=/uny/pkg/"$pkgname"/"$pkgver"/share/doc/libxml2
 
 make -j"$(nproc)"
 make -j"$(nproc)" install
