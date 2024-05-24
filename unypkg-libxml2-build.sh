@@ -13,8 +13,8 @@ wget -qO- uny.nu/pkg | bash -s buildsys
 ### Installing build dependencies
 unyp install python expat openssl
 
-pip3_bin=(/uny/pkg/python/*/bin/pip3)
-"${pip3_bin[0]}" install xml
+#pip3_bin=(/uny/pkg/python/*/bin/pip3)
+#"${pip3_bin[0]}" install
 
 ### Getting Variables from files
 UNY_AUTO_PAT="$(cat UNY_AUTO_PAT)"
