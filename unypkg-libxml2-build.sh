@@ -78,7 +78,6 @@ unset LD_RUN_PATH
 
 ./autogen.sh --prefix=/uny/pkg/"$pkgname"/"$pkgver" \
     --sysconfdir=/etc \
-    --disable-static \
     --with-history \
     --docdir=/uny/pkg/"$pkgname"/"$pkgver"/share/doc/libxml2
 
