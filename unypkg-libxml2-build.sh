@@ -90,6 +90,7 @@ cp -a /uny/pkg/"$pkgname"/"$pkgver"/include/libxml2/libxml/* /uny/pkg/"$pkgname"
 rm -rf /uny/pkg/"$pkgname"/"$pkgver"/include/libxml2/libxml
 #rmdir /uny/pkg/"$pkgname"/"$pkgver"/include/libxml2
 ln -s /uny/pkg/"$pkgname"/"$pkgver"/include /uny/pkg/"$pkgname"/"$pkgver"/include/libxml2/libxml
+ln -s /uny/pkg/"$pkgname"/"$pkgver"/include /uny/pkg/"$pkgname"/"$pkgver"/include/libxml
 
 ####################################################
 ### End of individual build script
