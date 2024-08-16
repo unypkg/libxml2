@@ -88,7 +88,8 @@ make -j"$(nproc)" install
 rm -vf /uny/pkg/"$pkgname"/"$pkgver"/lib/libxml2.la
 cp -a /uny/pkg/"$pkgname"/"$pkgver"/include/libxml2/libxml/* /uny/pkg/"$pkgname"/"$pkgver"/include/
 rm -rf /uny/pkg/"$pkgname"/"$pkgver"/include/libxml2/libxml
-rmdir /uny/pkg/"$pkgname"/"$pkgver"/include/libxml2
+#rmdir /uny/pkg/"$pkgname"/"$pkgver"/include/libxml2
+ln -s /uny/pkg/"$pkgname"/"$pkgver"/include /uny/pkg/"$pkgname"/"$pkgver"/include/libxml2/libxml
 
 ####################################################
 ### End of individual build script
